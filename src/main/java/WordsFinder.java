@@ -9,20 +9,27 @@ public class WordsFinder {
         String text = scan.nextLine();
 
         Map<String, Integer> foundWords = wordsFinder(text);
+
+        System.out.print(foundWords);
     }
 
     public static Map<String, Integer> wordsFinder(String text) {
-        Map<String, Integer> repeatedWords = new HashMap<>();
-        List<String> separatedWords = new ArrayList<>();
-        String separator = " ";
+        Map<String, Integer> repeatedWords = new TreeMap<>();
+        List<String> separatedWords = separateWords(text.toLowerCase());
 
-        text = text.toLowerCase();
 
-        separatedWords = separateWords(text);
+        for (String word : separatedWords) {
+            repeatedWords.put(word, 0);
+        }
 
-        //dodac zliczanie slow i reszte
+        for (String word : separatedWords) {
+            if (repeatedWords.containsKey(word)) {
+                int oneMore = repeatedWords.get(word) + 1;
+                repeatedWords.put(word, oneMore);
+            }
+        }
 
-        System.out.print(separatedWords);
+        //zrobic sortowanie
 
         return repeatedWords;
     }
@@ -38,7 +45,7 @@ public class WordsFinder {
 
             if (text.charAt(i) == ' ') {
                 endIndex = i;
-                String word = text.substring(startIndex,endIndex);
+                String word = text.substring(startIndex, endIndex);
                 separatedWords.add(word.trim());
                 startIndex = endIndex;
             }
