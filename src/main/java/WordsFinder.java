@@ -1,5 +1,8 @@
-import java.util.*;
+import com.sun.source.tree.UsesTree;
 
+import java.awt.desktop.SystemEventListener;
+import java.util.*;
+import java.util.Comparator;
 public class WordsFinder {
 
     public static void main(String[] args) {
@@ -17,7 +20,6 @@ public class WordsFinder {
         Map<String, Integer> repeatedWords = new TreeMap<>();
         List<String> separatedWords = separateWords(text.toLowerCase());
 
-
         for (String word : separatedWords) {
             repeatedWords.put(word, 0);
         }
@@ -31,7 +33,15 @@ public class WordsFinder {
 
         //zrobic sortowanie
 
-        return repeatedWords;
+        Map<String, Integer> sortedByValue = new HashMap<>(repeatedWords);
+
+        repeatedWords.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .forEachOrdered(x -> sortedByValue.put(x.getKey(), x.getValue()));
+
+
+        return sortedByValue;
     }
 
     public static List<String> separateWords(String text) {
