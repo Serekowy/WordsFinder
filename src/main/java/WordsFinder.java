@@ -31,15 +31,12 @@ public class WordsFinder {
             }
         }
 
-        //zrobic sortowanie
-
-        Map<String, Integer> sortedByValue = new HashMap<>(repeatedWords);
+        Map<String, Integer> sortedByValue = new LinkedHashMap<>();
 
         repeatedWords.entrySet()
                 .stream()
-                .sorted(Map.Entry.comparingByValue())
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .forEachOrdered(x -> sortedByValue.put(x.getKey(), x.getValue()));
-
 
         return sortedByValue;
     }
