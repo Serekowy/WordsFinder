@@ -1,8 +1,4 @@
-import com.sun.source.tree.UsesTree;
-
-import java.awt.desktop.SystemEventListener;
 import java.util.*;
-import java.util.Comparator;
 public class WordsFinder {
 
     public static void main(String[] args) {
@@ -45,7 +41,7 @@ public class WordsFinder {
         List<String> separatedWords = new ArrayList<>();
 
         int startIndex = 0;
-        int endIndex = 0;
+        int endIndex;
         text = text.concat(" ");
 
         for (int i = 0; i < text.length(); i++) {
