@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.stream.Collectors;
+
 public class WordsFinder {
 
     public static void main(String[] args) {
@@ -13,28 +15,26 @@ public class WordsFinder {
     }
 
     public static Map<String, Integer> wordsFinder(String text) {
-        Map<String, Integer> repeatedWords = new TreeMap<>();
         List<String> separatedWords = separateWords(text.toLowerCase());
-
-        for (String word : separatedWords) {
-            repeatedWords.put(word, 0);
-        }
+        Map<String, Integer> repeatedWords = new LinkedHashMap<>();
 
         for (String word : separatedWords) {
             if (repeatedWords.containsKey(word)) {
-                int oneMore = repeatedWords.get(word) + 1;
-                repeatedWords.put(word, oneMore);
+                repeatedWords.compute(word, (key, value) -> value += 1);
+            } else {
+                repeatedWords.compute(word, (key, value) -> value = 1);
             }
         }
 
-        Map<String, Integer> sortedByValue = new LinkedHashMap<>();
-
-        repeatedWords.entrySet()
+        return repeatedWords.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .forEachOrdered(x -> sortedByValue.put(x.getKey(), x.getValue()));
-
-        return sortedByValue;
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (o,n) -> o,
+                        LinkedHashMap::new
+                ));
     }
 
     public static List<String> separateWords(String text) {
