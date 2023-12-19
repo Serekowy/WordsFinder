@@ -16,14 +16,11 @@ public class WordsFinder {
 
     public static Map<String, Integer> wordsFinder(String text) {
         List<String> separatedWords = separateWords(text.toLowerCase());
-        Map<String, Integer> repeatedWords = new LinkedHashMap<>();
+        Map<String, Integer> repeatedWords = new HashMap<>();
 
         for (String word : separatedWords) {
-            if (repeatedWords.containsKey(word)) {
-                repeatedWords.compute(word, (key, value) -> value += 1);
-            } else {
-                repeatedWords.compute(word, (key, value) -> value = 1);
-            }
+            repeatedWords.computeIfPresent(word, (key, value) -> value + 1);
+            repeatedWords.putIfAbsent(word, 1);
         }
 
         return repeatedWords.entrySet()
@@ -32,28 +29,12 @@ public class WordsFinder {
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
-                        (o,n) -> o,
+                        (o, n) -> o,
                         LinkedHashMap::new
                 ));
     }
 
     public static List<String> separateWords(String text) {
-        List<String> separatedWords = new ArrayList<>();
-
-        int startIndex = 0;
-        int endIndex;
-        text = text.concat(" ");
-
-        for (int i = 0; i < text.length(); i++) {
-
-            if (text.charAt(i) == ' ') {
-                endIndex = i;
-                String word = text.substring(startIndex, endIndex);
-                separatedWords.add(word.trim());
-                startIndex = endIndex;
-            }
-        }
-
-        return separatedWords;
+        return Arrays.asList(text.split(" "));
     }
 }
