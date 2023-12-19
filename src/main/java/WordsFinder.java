@@ -38,22 +38,6 @@ public class WordsFinder {
     }
 
     public static List<String> separateWords(String text) {
-        List<String> separatedWords = new ArrayList<>();
-
-        int startIndex = 0;
-        int endIndex;
-        text = text.concat(" ");
-
-        for (int i = 0; i < text.length(); i++) {
-
-            if (text.charAt(i) == ' ') {
-                endIndex = i;
-                String word = text.substring(startIndex, endIndex);
-                separatedWords.add(word.trim());
-                startIndex = endIndex;
-            }
-        }
-
-        return separatedWords;
+        return Arrays.asList(text.split(" "));
     }
 }
